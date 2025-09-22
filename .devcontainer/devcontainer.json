@@ -9,7 +9,10 @@
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
   "runArgs": [
-    "--privileged"
+    "--privileged",
+    "--security-opt=seccomp=unconfined",
+    "--cap-add=SYS_ADMIN",
+    "--ipc=host"
   ],
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
@@ -24,4 +27,8 @@
     }
   },
   "postCreateCommand": "sudo service docker start || true"
+  ,
+  "hostRequirements": {
+    "description": "This devcontainer requires the host to allow privileged containers and the Docker daemon. If running in a cloud or CI environment, ensure the runner supports --privileged. If VS Code refuses to rebuild, run the container locally with Docker using: docker run --privileged -v /var/run/docker.sock:/var/run/docker.sock -it <image>"
+  }
 }
